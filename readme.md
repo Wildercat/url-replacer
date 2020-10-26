@@ -2,7 +2,9 @@
 
 All feedback welcome!
 
-## Future features wishlist:
+## Future features dump:
 - Launch URL directly in new tab
+- Multiple add/replace actions
 - Different profiles
 - Auto-select profiles for specific websites
+- Actual styling
