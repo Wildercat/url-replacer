@@ -16,7 +16,7 @@ document.addEventListener('DOMContentLoaded', function () {
             // }, function () {
             //     console.log('failure');
             // });
-            chrome.storage.sync.get([inputs], function(r) {
+            chrome.storage.sync.get(['inputReplace', 'inputAdd'], function(r) {
                 let toReplace = r.inputReplace;
                 let toAdd = r.inputAdd;
                 let output = tab.url;
