@@ -1,0 +1,15 @@
+{
+    "manifest_version": 2,
+  
+    "name": "URL Replacer",
+    "description": "This extension will swap out parts of a url",
+    "version": "0.1",
+  
+    "browser_action": {
+     "default_icon": "icon.png",
+     "default_popup": "popup.html"
+    },
+    "permissions": [
+     "activeTab"
+     ]
+  }
