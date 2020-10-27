@@ -11,6 +11,26 @@ function store(actions) {
 function mkE(element) {
     return document.createElement(element);
 }
+function mkEC(element,cls) {
+    let ele = document.createElement(element);
+    ele.setAttribute('class', cls);
+    return ele;
+}
+function prependInput(label, valuetxt) {
+    let parent = mkEC('div', 'input-group col px-1');
+    parent.setAttribute('data-value', valuetxt);
+    let prepend = mkEC('div', 'input-group-prepend');
+    let span = mkEC('span', 'input-group-text');
+    span.textContent = label;
+    prepend.appendChild(span);
+    parent.appendChild(prepend);
+
+    let input = mkEC('input', 'form-control');
+    input.setAttribute('type', 'text');
+    input.value = valuetxt;
+    parent.appendChild(input);
+    return parent;
+}
 function render() {
     let init = {
         actions: JSON.stringify([
@@ -45,28 +65,16 @@ function render() {
         let actions = r.actions ? JSON.parse(r.actions) : JSON.parse(init.actions);
         let actionList = document.getElementById('actions');
         while (actionList.firstChild && actionList.removeChild(actionList.firstChild));
-        // if (r.actions) {
+        
         let idx = 0;
         for (let item of actions) {
             let div = document.createElement('div');
-            div.setAttribute('class', 'row');
-            div.setAttribute('data-actionIdx', idx);
+            div.setAttribute('class', 'row mb-3');
+            div.setAttribute('data-actionidx', idx);
 
-            let labelReplace = document.createElement('label');
-            labelReplace.textContent = 'Replace: ';
-            div.appendChild(labelReplace);
+            div.appendChild(prependInput('Replace: ', item.replace));
 
-            let inputReplace = document.createElement('input');
-            inputReplace.value = item.replace;
-            div.appendChild(inputReplace);
-
-            let labelWith = document.createElement('label');
-            labelWith.textContent = 'With: ';
-            div.appendChild(labelWith);
-
-            let inputWith = document.createElement('input');
-            inputWith.value = item.with;
-            div.appendChild(inputWith);
+            div.appendChild(prependInput('With: ', item.with));
 
             let activeId = 'box' + idx;
             let labelActive = document.createElement('label');
@@ -81,31 +89,28 @@ function render() {
             inputActive.checked = item.isActive;
             div.appendChild(inputActive);
 
-            let labelLbl = mkE('label');
-            labelLbl.textContent = 'Label: ';
-            div.appendChild(labelLbl);
-
-            let inputLbl = mkE('input');
-            inputLbl.value = item.label;
-            div.appendChild(inputLbl);
+            div.appendChild(prependInput('Label:', item.label));
+        
 
             let saveBtn = document.createElement('button');
             saveBtn.textContent = 'Save';
             saveBtn.setAttribute('class', 'btn btn-primary');
             saveBtn.addEventListener('click', function () {
-                let thisIdx = this.parentElement.getAttribute('data-actionIdx');
-                // console.log(this.parentElement.children);
-                actions[thisIdx].replace = this.parentElement.children[1].value;
-                actions[thisIdx].with = this.parentElement.children[3].value;
-                actions[thisIdx].isActive = this.parentElement.children[5].checked;
-                actions[thisIdx].label = this.parentElement.children[7].value;
+                let thisIdx = this.parentElement.getAttribute('data-actionidx');
+                console.log(this.parentElement.children);
+                console.log(this.parentElement.children[0].children[1].value);
+                actions[thisIdx].replace = this.parentElement.children[0].children[1].value;
+                console.log(actions[thisIdx]);
+                actions[thisIdx].with = this.parentElement.children[1].children[1].value;
+                actions[thisIdx].isActive = this.parentElement.children[3].checked;
+                actions[thisIdx].label = this.parentElement.children[4].children[1].value;
                 console.log(actions);
                 chrome.storage.sync.set({actions: JSON.stringify(actions)});
             });
             div.appendChild(saveBtn);
 
             let del = document.createElement('button');
-            del.setAttribute('class', 'btn btn-warning');
+            del.setAttribute('class', 'btn btn-outline-danger mx-1');
             del.setAttribute('id', 'a' + idx);
             del.textContent = 'Delete';
             del.addEventListener('click', function () {
@@ -121,24 +126,7 @@ function render() {
             actionList.appendChild(div);
             idx++;
         }
-        // } else {
-        //     //initialize storage data
-        //     chrome.storage.sync.set(init, function() {
-        //         console.log('init happened');
-        //     });
-        // }
-
-        // let saveButton = document.createElement('button');
-        // saveButton.textContent = 'Save';
-        // saveButton.setAttribute('class', 'btn btn-primary');
-        // saveButton.addEventListener('click', function () {
-        //     let saveActions = {
-        //         actions: JSON.stringify(actions)
-        //     }
-        //     chrome.storage.sync.set(saveActions);
-        // });
-
-        // saveDiv.appendChild(saveButton);
+      
 
 
         newButton.addEventListener('click', function () {
@@ -152,19 +140,3 @@ function render() {
 }
 render();
 
-// let saveDiv = document.getElementById('save');
-// let saveButton = document.createElement('button');
-// saveButton.textContent = 'Save Settings';
-// saveButton.addEventListener('click', function () {
-//     chrome.storage.sync.set({ inputReplace: replaceField.value });
-//     chrome.storage.sync.set({ inputAdd: addField.value });
-// });
-// saveDiv.appendChild(saveButton);
-// let viewButton = document.createElement('button');
-// viewButton.textContent = 'log';
-// viewButton.addEventListener('click', function () {
-//     chrome.storage.sync.get(null, function(result) {
-//         console.log(result);
-//     });
-// })
-// saveDiv.appendChild(viewButton);

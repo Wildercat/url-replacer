@@ -26,26 +26,26 @@ document.addEventListener('DOMContentLoaded', function () {
             target.appendChild(btn);
         });
     });
-    let inputs = ['inputReplace', 'inputAdd'];
-    var checkPageButton = document.getElementById('createURL');
-    checkPageButton.addEventListener('click', function () {
-        chrome.tabs.getSelected(null, function (tab) {
-            // navigator.clipboard.writeText('output').then(function () {
-            //     console.log('success');
-            // }, function () {
-            //     console.log('failure');
-            // });
-            chrome.storage.sync.get(['inputReplace', 'inputAdd'], function(r) {
-                let toReplace = r.inputReplace;
-                let toAdd = r.inputAdd;
-                let output = tab.url;
-                output = output.replace(toReplace, toAdd);
-                navigator.clipboard.writeText(output).then(function () {
-                    console.log('success');
-                }, function () {
-                    console.log('failure');
-                });
-            });
-        });
-    }, false);
+    // let inputs = ['inputReplace', 'inputAdd'];
+    // var checkPageButton = document.getElementById('createURL');
+    // checkPageButton.addEventListener('click', function () {
+    //     chrome.tabs.getSelected(null, function (tab) {
+    //         // navigator.clipboard.writeText('output').then(function () {
+    //         //     console.log('success');
+    //         // }, function () {
+    //         //     console.log('failure');
+    //         // });
+    //         chrome.storage.sync.get(['inputReplace', 'inputAdd'], function(r) {
+    //             let toReplace = r.inputReplace;
+    //             let toAdd = r.inputAdd;
+    //             let output = tab.url;
+    //             output = output.replace(toReplace, toAdd);
+    //             navigator.clipboard.writeText(output).then(function () {
+    //                 console.log('success');
+    //             }, function () {
+    //                 console.log('failure');
+    //             });
+    //         });
+    //     });
+    // }, false);
 }, false);
