@@ -2,7 +2,7 @@
     "manifest_version": 2,
     "name": "URL Replacer",
     "description": "Replaces part of a URL, then copies it to your clipboard",
-    "version": "0.1",
+    "version": "0.2",
     "browser_action": {
         "default_icon": "icon.png",
         "default_popup": "popup.html"
