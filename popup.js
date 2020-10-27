@@ -5,8 +5,27 @@
 //     document.getElementById('inputAdd').value = await settings.toAdd;
 // }
 // main()
+function mkE(element) {
+    return document.createElement(element);
+}
 console.log("asdfasdfasdf");
 document.addEventListener('DOMContentLoaded', function () {
+    
+    chrome.storage.sync.get('actions', function(r) {
+        actions = JSON.parse(r.actions);
+        let target = document.getElementById('buttons');
+        actions.filter(i => i.isActive).map((item) => {
+            let btn = mkE('button');
+            btn.textContent = item.label;
+            btn.addEventListener('click', function () {
+                chrome.tabs.getSelected(null, function (tab) {
+                    let output = tab.url.replace(item.replace, item.with);
+                    navigator.clipboard.writeText(output);
+                })
+            })
+            target.appendChild(btn);
+        });
+    });
     let inputs = ['inputReplace', 'inputAdd'];
     var checkPageButton = document.getElementById('createURL');
     checkPageButton.addEventListener('click', function () {

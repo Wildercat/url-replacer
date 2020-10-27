@@ -8,11 +8,15 @@ function store(actions) {
     console.log(JSON.stringify(actions))
     chrome.storage.sync.set({actions: JSON.stringify(actions)});
 }
+function mkE(element) {
+    return document.createElement(element);
+}
 function render() {
     let init = {
         actions: JSON.stringify([
             {
                 // id: createUUID(),
+                label: '',
                 replace: '',
                 with: '',
                 isActive: true
@@ -77,6 +81,14 @@ function render() {
             inputActive.checked = item.isActive;
             div.appendChild(inputActive);
 
+            let labelLbl = mkE('label');
+            labelLbl.textContent = 'Label: ';
+            div.appendChild(labelLbl);
+
+            let inputLbl = mkE('input');
+            inputLbl.value = item.label;
+            div.appendChild(inputLbl);
+
             let saveBtn = document.createElement('button');
             saveBtn.textContent = 'Save';
             saveBtn.setAttribute('class', 'btn btn-primary');
@@ -86,6 +98,7 @@ function render() {
                 actions[thisIdx].replace = this.parentElement.children[1].value;
                 actions[thisIdx].with = this.parentElement.children[3].value;
                 actions[thisIdx].isActive = this.parentElement.children[5].checked;
+                actions[thisIdx].label = this.parentElement.children[7].value;
                 console.log(actions);
                 chrome.storage.sync.set({actions: JSON.stringify(actions)});
             });
